@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE configuration 
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-config.dtd" >
+
+<configuration>
+	<settings>
+		<!-- 비어있는 값이 들어오면 null로 사용하다는 것을 설정. -->
+		<setting name="jdbcTypeForNull" value="NULL"/>
+	</settings>
+	<typeAliases>
+		<typeAlias type="com.kh.pop.service.model.vo.ScBoard" 		alias="ScBoard"/>
+		<typeAlias type="com.kh.pop.service.model.vo.coBoard" 		alias="coBoard"/>
+		<typeAlias type="com.kh.pop.service.model.vo.IpBoard" 		alias="IpBoard"/>
+		<typeAlias type="com.kh.pop.service.model.vo.EduBoard"		alias="EduBoard"/>
+		<typeAlias type="com.kh.pop.service.model.vo.LicenseBoard" 	alias="LicenseBoard"/>
+		<typeAlias type="com.kh.pop.service.model.vo.projectBoard" 	alias="projectBoard"/>
+		<typeAlias type="com.kh.pop.service.model.vo.companyBoard"	alias="companyBoard"/>
+		<typeAlias type="com.kh.pop.service.model.vo.clientBoard"	alias="clientBoard"/>
+		<typeAlias type="com.kh.pop.service.model.vo.workBoard" 	alias="workBoard"/>
+		<typeAlias type="com.kh.pop.service.model.vo.Board" 		alias="Board"/>
+		<typeAlias type="com.kh.pop.service.model.vo.ScFileInfo" 	alias="scFileInfo"/>
+		<typeAlias type="com.kh.pop.service.model.vo.CoFileInfo" 	alias="coFileInfo"/>
+		<typeAlias type="com.kh.pop.service.model.vo.Member" 		alias="Member"/>
+	</typeAliases> 
+	<mappers>
+		<mapper resource="mapper/service-mapper.xml"/>
+		<mapper resource="mapper/cost-mapper.xml"/>
+		<mapper resource="mapper/interpia-mapper.xml"/>
+	</mappers>
+</configuration>

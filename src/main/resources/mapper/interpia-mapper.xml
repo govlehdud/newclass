@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="interpiaMapper">
+<!-- LoginPage를 위한 쿼리  -->
+	<select id = "getloginBtn" resultMap="memberResultSet">
+		SELECT *
+		FROM ADMIN
+		WHERE 
+		ADMIN_ID=#{id} AND ADMIN_PW=#{pw}
+	</select>
+	<resultMap type="Member" id="memberResultSet">
+		<id 	property="id" 	column="ADMIN_ID"/>
+		<result property="pw" 	column="ADMIN_PW"/>
+	</resultMap>
+<!-- LoginPage끝 -->
+
+
+<!-- MainBoard -->
+<select id="getListCount"  resultType="java.lang.Integer">
+	SELECT COUNT(*)
+	FROM SIGN
+	WHERE SIGN_CODE IS NOT NULL
+</select>
+	
+<select id="selectList"		resultMap="mainBoardResultSet">
+		SELECT *
+		FROM SIGN
+		WHERE SIGN_CODE is not null
+		ORDER BY SIGN_CODE DESC
+</select>
+<resultMap type="IpBoard" id="mainBoardResultSet">
+		<id 	property="code" 	column="SIGN_CODE"/>
+		<result property="kname" 	column="SIGN_KNAME"/>
+		<result property="ename" 	column="SIGN_ENAME"/>
+		<result property="cname" 	column="SIGN_CNAME"/>
+		<result property="inumber1"	column="SIGN_INUMBER1"/>
+		<result property="inumber2"	column="SIGN_INUMBER2"/>
+		<result property="year"		column="SIGN_YEAR"/>
+		<result property="month"	column="SIGN_MONTH"/>
+		<result property="day"		column="SIGN_DAY"/>
+		<result property="calendar"	column="SIGN_CALENDAR"/>
+		<result property="gender" 	column="SIGN_GENDER"/>
+		<result property="marry" 	column="SIGN_MARRY"/>
+		<result property="annual" 	column="SIGN_ANNUAL"/>
+		<result property="salary" 	column="SIGN_SALARY"/>
+		<result property="duty" 	column="SIGN_DUTY"/>
+		<result property="entry" 	column="SIGN_ENTRY"/>
+		<result property="address1" column="SIGN_ADDRESS1"/>
+		<result property="address2" column="SIGN_ADDRESS2"/>
+		<result property="phone1" 	column="SIGN_PHONE1"/>
+		<result property="phone2" 	column="SIGN_PHONE2"/>
+		<result property="phone3" 	column="SIGN_PHONE3"/>
+		<result property="mail" 	column="SIGN_MAIL"/>
+		<result property="grade" 	column="SIGN_GRADE"/>
+		<result property="status" 	column="SIGN_STATUS"/>
+		<result property="state" 	column="SIGN_STATE"/>
+		<result property="worktype" column="SIGN_WORKTYPE"/>
+		<result property="alcohol" 	column="SIGN_ALCOHOL"/>
+</resultMap>
+<!-- 검색 수 -->
+	<select id="getSearchListCount" parameterType="com.kh.pop.service.model.vo.SearchConditionMain" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM SIGN
+		WHERE SIGN_STATUS='Y'
+		<if test="kname != null">
+			AND SIGN_KNAME like '%' || #{kname} || '%'
+		</if>
+		<if test="inumber1 != null">
+			AND SIGN_INUMBER1 like '%' || #{inumber1} || '%'
+		</if>
+		<if test="gender != null">
+			AND SIGN_GENDER like '%' || #{gender} || '%'
+		</if>
+		<if test="annual != null">
+			AND SIGN_ANNUAL like '%' || #{annual} || '%'
+		</if>
+		<if test="address2 != null">
+			AND SIGN_ADDRESS2 like '%' || #{address2} || '%'
+		</if>
+	</select>
+	
+	<!-- 검색 -->
+	<select id="selectSearchList" parameterType="com.kh.pop.service.model.vo.SearchConditionMain" resultMap="mainBoardResultSet">
+		SELECT *
+		FROM SIGN
+		WHERE SIGN_STATUS='Y'
+		<choose>
+			<when test="kname != null">
+				AND SIGN_KNAME like'%' || #{kname} || '%'
+			</when>
+			<when test="inumber1 != null">
+				AND SIGN_INUMBER1 like '%' || #{inumber1} || '%'
+			</when>
+			<when test="gender != null">
+				AND SIGN_GENDER like '%' || #{gender} || '%'
+			</when>
+			<when test="annual != null">
+				AND SIGN_ANNUAL like '%' || #{annual} || '%'
+			</when>
+			<when test="address2 != null">
+				AND SIGN_ADDRESS2 like '%' || #{address2} || '%'
+			</when>
+		</choose>
+		ORDER BY SIGN_CODE DESC
+	</select>
+
+
+<!-- MainBoard끝 -->
+
+
+</mapper>

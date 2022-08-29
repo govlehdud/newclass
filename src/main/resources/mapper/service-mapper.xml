@@ -1,0 +1,934 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="serviceMapper">
+<!-- LoginPage를 위한 쿼리  -->
+	<select id = "getloginBtn" resultMap="memberResultSet">
+		SELECT *
+		FROM ADMIN
+		WHERE 
+		ADMIN_ID=#{id} AND ADMIN_PW=#{pw}
+	</select>
+	<resultMap type="Member" id="memberResultSet">
+		<id 	property="id" 	column="ADMIN_ID"/>
+		<result property="pw" 	column="ADMIN_PW"/>
+	</resultMap>
+<!-- LoginPage끝 -->
+
+
+	
+	
+	<select id="getListCount" 		resultType="java.lang.Integer">		       
+        SELECT 
+        		count(*) 
+		FROM 
+				MEMBER
+    	where 
+    			member_code is not null
+    			AND
+				MEMBER_STATUS = 'Y'
+	</select>
+	
+	<select id="getList2Count" 		resultType="java.lang.Integer">		       
+        SELECT 
+        		count(*) 
+		FROM 
+				MEMBER
+    	where 
+    			member_code is not null
+    			AND
+				MEMBER_STATUS = 'N'
+	</select>
+	
+	<select id="getRListCount" resultType="java.lang.Integer">
+		SELECT 
+				COUNT(*)
+		FROM 
+				MEMBER
+		WHERE 	MEMBER_CODE IS NOT NULL
+				AND 
+				MEMBER_VAL = '예비'	
+	</select>
+	
+	
+	
+	
+	<select id="selectreserveList"		resultMap="scboardResultSet">
+		SELECT 
+				*
+		FROM 	
+				MEMBER
+		WHERE 
+				member_code is not null 
+				AND
+				MEMBER_VAL = '예비'
+		ORDER BY 
+				member_code DESC
+	</select>
+	
+	
+	<select id="selectList2"		resultMap="scboardResultSet">
+		SELECT 
+				*
+		FROM 	
+				MEMBER
+		WHERE 
+				member_code is not null 
+				AND
+				MEMBER_STATUS = 'N'
+		ORDER BY 
+				member_code DESC
+	</select>
+	
+	<!-- <게시물 목록>
+	resultType은 쿼리를 실행한뒤 결과가 있을경우 사용하며,
+	반대로 데이터를 넣을때는
+	parameterType을 사용 
+	-->
+	<select id="selectList"		resultMap="scboardResultSet">
+		SELECT 
+				*
+		FROM 	
+				MEMBER
+		WHERE 
+				member_code is not null 
+				AND
+				MEMBER_STATUS = 'Y'
+		ORDER BY 
+				member_code DESC
+	</select>
+	
+	
+	<!-- 상세보기 -->
+	<select id="selectBoard"	resultMap="scboardResultSet">
+		select 
+				*
+		from 
+				member
+		where 
+				member_code = #{code}
+	</select>
+	<select id="selectSceduBoard"	resultMap="scboardResultSet">
+		select 
+				*
+		from 
+				member
+		where 
+				member_code = #{code}
+	</select>
+	
+	<resultMap type="ScBoard" id="scboardResultSet">
+		<id 	property="code" 	column="MEMBER_CODE"/>
+		<result property="kname" 	column="MEMBER_KNAME"/>
+		<result property="ename" 	column="MEMBER_ENAME"/>
+		<result property="cname" 	column="MEMBER_CNAME"/>
+		<result property="inumber1"	column="MEMBER_INUMBER1"/>
+		<result property="inumber2"	column="MEMBER_INUMBER2"/>
+		<result property="file"		column="MEMBER_FILE"/>
+		<result property="year"		column="MEMBER_YEAR"/>
+		<result property="month"	column="MEMBER_MONTH"/>
+		<result property="day"		column="MEMBER_DAY"/>
+		<result property="calendar"	column="MEMBER_CALENDAR"/>
+		<result property="gender" 	column="MEMBER_GENDER"/>
+		<result property="marry" 	column="MEMBER_MARRY"/>
+		<result property="annual" 	column="MEMBER_ANNUAL"/>
+		<result property="salary" 	column="MEMBER_SALARY"/>
+		<result property="duty" 	column="MEMBER_DUTY"/>
+		<result property="entry" 	column="MEMBER_ENTRY"/>
+		<result property="address1" column="MEMBER_ADDRESS1"/>
+		<result property="address2" column="MEMBER_ADDRESS2"/>
+		<result property="phone1" 	column="MEMBER_PHONE1"/>
+		<result property="phone2" 	column="MEMBER_PHONE2"/>
+		<result property="phone3" 	column="MEMBER_PHONE3"/>
+		<result property="mail" 	column="MEMBER_MAIL"/>
+		<result property="grade" 	column="MEMBER_GRADE"/>
+		<result property="status" 	column="MEMBER_STATUS"/>
+		<result property="state" 	column="MEMBER_STATE"/>
+		<result property="worktype" column="MEMBER_WORKTYPE"/>
+		<result property="alcohol" 	column="MEMBER_ALCOHOL"/>
+		<result property="val" 		column="MEMBER_VAL"/>
+	</resultMap>
+	
+	<!-- 게시판 수정 -->
+	<update id="updatescBoard">
+		UPDATE 	MEMBER
+		SET 	MEMBER_KNAME	= #{kname}, 
+				MEMBER_ENAME	= #{ename},
+				MEMBER_CNAME	= #{cname}, 
+				MEMBER_INUMBER1	= #{inumber1},
+				MEMBER_INUMBER2 = #{inumber2},
+				MEMBER_FILE		= #{file},
+				MEMBER_YEAR		= #{year},
+				MEMBER_MONTH	= #{month},
+				MEMBER_DAY		= #{day},
+				MEMBER_CALENDAR	= #{calendar}, 
+				MEMBER_GENDER	= #{gender},
+				MEMBER_MARRY	= #{marry}, 
+				MEMBER_ANNUAL	= #{annual},
+				MEMBER_SALARY	= #{salary}, 
+				MEMBER_DUTY		= #{duty}, 
+				MEMBER_ENTRY	= #{entry},
+				MEMBER_ADDRESS1	= #{address1},
+				MEMBER_ADDRESS2	= #{address2},
+				MEMBER_PHONE1	= #{phone1},
+				MEMBER_PHONE2	= #{phone2},
+				MEMBER_PHONE3	= #{phone3},
+				MEMBER_MAIL		= #{mail},
+				MEMBER_GRADE	= #{grade},
+				MEMBER_STATE	= #{state},
+				MEMBER_WORKTYPE	= #{worktype},
+				MEMBER_ALCOHOL	= #{alcohol}
+		WHERE 	MEMBER_CODE 	= #{code}
+	</update>
+	
+	
+	<!-- 게시판 수정    학력 updateEduBoard -> UPDATE -->
+	<update id="updateEduBoard">
+	    UPDATE
+	   			EDUCATION
+    	SET		EDU_HIGH 				= #{eHigh},
+    			EDU_HIGH_CLASS			= #{eHighClass},
+    			EDU_HIGH_YEAR			= #{eHighYear},
+    			EDU_HIGH_MONTH			= #{eHighMonth},
+    			EDU_COM					= #{eCom},
+    			EDU_COM_CLASS			= #{eComClass},
+    			EDU_COM_YEAR			= #{eComYear},
+    			EDU_COM_MONTH			= #{eComMonth},
+    			EDU_COLLEGE				= #{eCollege},
+    			EDU_COLLEGE_CLASS		= #{eCollegeClass},
+    			EDU_COLLEGE_YEAR		= #{eCollegeYear},
+    			EDU_COLLEGE_MONTH		= #{eCollegeMonth},
+    			EDU_UNIVERSITY			= #{eUniver},
+    			EDU_UNIVERSITY_CLASS	= #{eUniverClass},
+    			EDU_UNIVERSITY_YEAR		= #{eUniverYear},
+    			EDU_UNIVERSITY_MONTH	= #{eUniverMonth},
+    			
+    			EDU_NAME1 				= #{EDU_NAME1},
+    			EDU_START1 				= #{EDU_START1},
+    			EDU_END1 				= #{EDU_END1},
+    			EDU_period1				= #{EDU_period1},
+    			
+    			EDU_NAME2 				= #{EDU_NAME2},
+    			EDU_START2 				= #{EDU_START2},
+    			EDU_END2 				= #{EDU_END2},
+    			EDU_period2 			= #{EDU_period2},
+    			
+    			EDU_NAME3 				= #{EDU_NAME3},
+    			EDU_START3				= #{EDU_START3},
+    			EDU_END3				= #{EDU_END3},
+    			EDU_period3				= #{EDU_period3}
+     	WHERE	EDU_ID = #{code}
+	</update>
+	
+	<!-- 학력 / 교육 게시판 선별  -->
+	<select id="selecteduBoard"	resultMap="eduboardResultSet">
+		select *
+		from EDUCATION
+		where EDU_ID = #{code}
+	</select>
+	
+	<!-- 학력 / 교육 -->
+	<resultMap type="EduBoard" id="eduboardResultSet">
+		<id 	property="eId" 				column="EDU_ID"/>
+		
+		<result property="eHigh" 			column="EDU_HIGH"/>
+		<result property="eHighClass" 		column="EDU_HIGH_CLASS"/>
+		<result property="eHighYear" 		column="EDU_HIGH_YEAR"/>
+		<result property="eHighMonth" 		column="EDU_HIGH_MONTH"/>
+		
+		<result property="eCom" 			column="EDU_COM"/>
+		<result property="eComClass"		column="EDU_COM_CLASS"/>
+		<result property="eComYear"			column="EDU_COM_YEAR"/>
+		<result property="eComMonth"		column="EDU_COM_MONTH"/>
+		
+		<result property="eCollege"			column="EDU_COLLEGE"/>
+		<result property="eCollegeClass"	column="EDU_COLLEGE_CLASS"/>
+		<result property="eCollegeYear"		column="EDU_COLLEGE_YEAR"/>
+		<result property="eCollegeMonth"	column="EDU_COLLEGE_MONTH"/>
+		
+		<result property="eUniver"			column="EDU_UNIVERSITY"/>
+		<result property="eUniverClass"		column="EDU_UNIVERSITY_CLASS"/>
+		<result property="eUniverYear"		column="EDU_UNIVERSITY_YEAR"/>
+		<result property="eUniverMonth"		column="EDU_UNIVERSITY_MONTH"/>
+		
+		<result property="EDU_NAME1"		column="EDU_NAME1"/>
+		<result property="EDU_START1"		column="EDU_START1"/>
+		<result property="EDU_END1"			column="EDU_END1"/>
+		<result property="EDU_period1"		column="EDU_PERIOD1"/>
+		
+		<result property="EDU_NAME2"		column="EDU_NAME2"/>
+		<result property="EDU_START2"		column="EDU_START2"/>
+		<result property="EDU_END2"			column="EDU_END2"/>
+		<result property="EDU_period2"		column="EDU_PERIOD2"/>
+		
+		<result property="EDU_NAME3"		column="EDU_NAME3"/>
+		<result property="EDU_START3"		column="EDU_START3"/>
+		<result property="EDU_END3"			column="EDU_END3"/>
+		<result property="EDU_period3"		column="EDU_PERIOD3"/>
+		
+	</resultMap>
+
+		
+		
+		
+		
+		
+	<!-- 자격증 / 보유기술  -->
+	<resultMap type="LicenseBoard" id="licenseboardResultSet">
+		<id 	property="lId" 			column="LICENSE_ID"/>
+		
+		<result property="license1" 	column="LICENSE1"/>
+		<result property="license2" 	column="LICENSE2"/>
+		<result property="license3" 	column="LICENSE3"/>
+		<result property="license4" 	column="LICENSE4"/>
+		
+		
+		<result property="ACQUISITION1" column="ACQUISITION1"/>
+		<result property="ACQUISITION2" column="ACQUISITION2"/>
+		<result property="ACQUISITION3" column="ACQUISITION3"/>
+		<result property="ACQUISITION4" column="ACQUISITION4"/>
+		
+		
+		<result property="tech1" 		column="TECH1"/>
+		<result property="tech2" 		column="TECH2"/>
+		<result property="tech3" 		column="TECH3"/>
+		<result property="tech4" 		column="TECH4"/>
+		<result property="tech5" 		column="TECH5"/>
+		
+		<result property="PROFICIENCY1" column="PROFICIENCY1"/>
+		<result property="PROFICIENCY2" column="PROFICIENCY2"/>
+		<result property="PROFICIENCY3" column="PROFICIENCY3"/>
+		<result property="PROFICIENCY4" column="PROFICIENCY4"/>
+		<result property="PROFICIENCY5" column="PROFICIENCY5"/>
+	</resultMap>
+	
+	<!-- 자격증 / 보유기술 id값 선별  -->
+	<select id="selectlicBoard"	resultMap="licenseboardResultSet">
+		select *
+		from LICENSE
+		where LICENSE_ID = #{code}
+	</select>
+	<select id="selectLicenseBoard"	resultMap="licenseboardResultSet">
+		select *
+		from LICENSE
+		where LICENSE_ID = #{code}
+	</select>
+	
+	
+	
+	
+	<!-- 자격증 / 보유기술 id값 선별  -->
+	<select id="selectlicBoardget"	resultMap="licenseboardResultSet">
+		select *
+		from LICENSE
+		where LICENSE_ID = #{eId}
+	</select>
+
+	
+		<!-- 게시판 수정    학력 updateEduBoard -> UPDATE -->
+	<update id="updateLicenseBoard">
+		UPDATE
+	        LICENSE
+    	 SET    
+    	 		LICENSE1 = #{license1},
+    	 		LICENSE2 = #{license2},
+    	 		LICENSE3 = #{license3},
+    	 		LICENSE4 = #{license4},
+    	 		
+    	 		ACQUISITION1 = #{ACQUISITION1},
+    	 		ACQUISITION2 = #{ACQUISITION2},
+    	 		ACQUISITION3 = #{ACQUISITION3},
+    	 		ACQUISITION4 = #{ACQUISITION4},
+    	 		
+    	 		TECH1 = #{tech1},
+    	 		TECH2 = #{tech2},
+    	 		TECH3 = #{tech3},
+    	 		TECH4 = #{tech4},
+    	 		TECH5 = #{tech5},
+    	 		
+    	 		PROFICIENCY1 = #{PROFICIENCY1},
+    	 		PROFICIENCY2 = #{PROFICIENCY2},
+    	 		PROFICIENCY3 = #{PROFICIENCY3},
+    	 		PROFICIENCY4 = #{PROFICIENCY4},
+    	 		PROFICIENCY5 = #{PROFICIENCY5}
+    	 		
+    	WHERE LICENSE_ID = ${code}
+	</update>
+	
+	
+	<update id="updateLicenseTechBoard">
+		UPDATE
+	        	LICENSE 
+    	 SET    
+    	 		LICENSE1 = #{license1},
+    	 		LICENSE2 = #{license2},
+    	 		LICENSE3 = #{license3},
+    	 		LICENSE4 = #{license4},
+    	 		
+    	 		ACQUISITION1 = #{ACQUISITION1},
+    	 		ACQUISITION2 = #{ACQUISITION2},
+    	 		ACQUISITION3 = #{ACQUISITION3},
+    	 		ACQUISITION4 = #{ACQUISITION4},
+    	 		
+    	 		TECH1 = #{tech1},
+    	 		TECH2 = #{tech2},
+    	 		TECH3 = #{tech3},
+    	 		TECH4 = #{tech4},
+    	 		TECH5 = #{tech5},
+    	 		
+    	 		PROFICIENCY1 = #{PROFICIENCY1},
+    	 		PROFICIENCY2 = #{PROFICIENCY2},
+    	 		PROFICIENCY3 = #{PROFICIENCY3},
+    	 		PROFICIENCY4 = #{PROFICIENCY4},
+    	 		PROFICIENCY5 = #{PROFICIENCY5}
+    	WHERE LICENSE_ID = ${code}
+	</update>
+	
+	
+	
+	
+	
+	
+	
+	
+	<!--  회사명 / 직위 / 담당업무 회원정보 게시판 -->
+	<resultMap type="companyBoard" id="companyboardResultSet">
+		<id 	property="cId" 			column="COM_ID"/>
+		
+		<result property="cName1" 		column="COM_NAME1"/>
+		<result property="cPeriod11" 	column="COM_PERIOD11"/>
+		<result property="cPeriod21" 	column="COM_PERIOD21"/>
+		<result property="cSpot1" 		column="COM_SPOT1"/>
+		<result property="cWork1" 		column="COM_WORK1"/>
+		
+		<result property="cName2" 		column="COM_NAME2"/>
+		<result property="cPeriod12" 	column="COM_PERIOD12"/>
+		<result property="cPeriod22" 	column="COM_PERIOD22"/>
+		<result property="cSpot2" 		column="COM_SPOT2"/>
+		<result property="cWork2" 		column="COM_WORK2"/>
+		
+		<result property="cName3" 		column="COM_NAME3"/>
+		<result property="cPeriod13" 	column="COM_PERIOD13"/>
+		<result property="cPeriod23" 	column="COM_PERIOD23"/>
+		<result property="cSpot3" 		column="COM_SPOT3"/>
+		<result property="cWork3" 		column="COM_WORK3"/>
+		
+		<result property="cName4" 		column="COM_NAME4"/>
+		<result property="cPeriod14" 	column="COM_PERIOD14"/>
+		<result property="cPeriod24" 	column="COM_PERIOD24"/>
+		<result property="cSpot4" 		column="COM_SPOT4"/>
+		<result property="cWork4" 		column="COM_WORK4"/>
+	</resultMap>
+	
+	<select id="selectcomBoard"	resultMap="companyboardResultSet">
+		select *
+		from COMPANY
+		where COM_ID = #{cId}
+	</select>
+	<select id="selectCompanyBoard"	resultMap="companyboardResultSet">
+		select *
+		from COMPANY
+		where COM_ID = #{cId}
+	</select>
+	
+	
+	<update id="updateCompanyBoard">
+	UPDATE
+		COMPANY
+	SET
+			COM_NAME1 = #{ cName1 },
+		    COM_PERIOD11 = #{ cPeriod11 },
+		    COM_PERIOD21 = #{ cPeriod12 },
+		    COM_SPOT1 = #{ cSpot1 },
+		    COM_WORK1 = #{ cWork1 },
+		    
+		    COM_NAME2 = #{ cName2 },
+		    COM_PERIOD12 = #{ cPeriod12 },
+		    COM_PERIOD22 = #{ cPeriod22 },
+		    COM_SPOT2 = #{ cSpot2 },
+		    COM_WORK2 = #{ cWork2 },
+		    
+		    COM_NAME3 = #{ cName3 },
+		    COM_PERIOD13 = #{ cPeriod13 },
+		    COM_PERIOD23 = #{ cPeriod23 },
+		    COM_SPOT3 = #{ cSpot3 },
+		    COM_WORK3 = #{ cWork3 },
+		    
+		    COM_NAME4 = #{ cName4 },
+		    COM_PERIOD14 = #{ cPeriod14 },
+		    COM_PERIOD24 =  #{ cPeriod24 },
+		    COM_SPOT4 = #{ cSpot4 },
+		    COM_WORK4 = #{ cWork4 } 
+		WHERE COM_ID = #{code}
+	
+	</update>
+	
+	
+	
+	
+	
+	<!-- 프로젝트 명 / 근무장소 / 근시작일  WORK  -->
+	<resultMap type="workBoard" id="workboardResultSet">
+		<id 	property="wId" 			column="WORK_ID"/>
+		
+		<result property="projectName" 	column="PROJECTNAME"/>
+		<result property="workPlace" 	column="WORKPLACE"/>
+		<result property="workStart" 	column="WORKSTART"/>
+		<result property="workEnd" 		column="WORKEND"/>
+		<result property="sale" 		column="SALE"/>
+		<result property="payStart" 	column="PAYSTART"/>
+		<result property="payDay" 		column="PAYDAY"/>
+		<result property="client" 		column="CLIENT"/>
+	</resultMap>
+	
+	<select id="selectworkBoard"	resultMap="workboardResultSet">
+		select *
+		from WORK
+		where WORK_ID = #{ wId }
+	</select>
+	
+	<update id="updateWorkBoard">
+		UPDATE 
+			    WORK
+		SET    
+    			 PROJECTNAME	= #{projectName},
+   				 WORKPLACE		= #{workPlace},
+   				 WORKSTART		= #{workStart},
+   				 WORKEND		= #{workEnd},
+   				 SALE			= #{sale},
+   				 PAYSTART		= #{payStart},
+   				 PAYDAY			= #{payDay},
+   				 CLIENT			= #{client}
+    	WHERE	 WORK_ID = #{ code }
+	</update>
+	
+	
+	
+	<!-- 프로젝트명 / 개발환경 -->
+	<resultMap type="projectBoard" id="projectboardResultSet">
+		<id 	property="pId" 				column="PRO_ID"/>
+		
+		<result property="proName" 			column="PRO_NAME"/>
+		<result property="proPeriod1" 		column="PRO_PERIOD1"/>
+		<result property="proPeriod2" 		column="PRO_PERIOD2"/>
+		<result property="proCustomer" 		column="PRO_CUSTOMER"/>
+		<result property="proCompany" 		column="PRO_COMPANY"/>
+		<result property="proArea" 			column="PRO_AREA"/>
+		<result property="proPart" 			column="PRO_PART"/>
+		
+		<result property="proProduct" 		column="PRO_PRODUCT"/>
+		<result property="proOs" 			column="PRO_OS"/>
+		<result property="proLanguage" 		column="PRO_LANGUAGE"/>
+		<result property="proDbms" 			column="PRO_DBMS"/>
+		<result property="proTool" 			column="PRO_TOOL"/>
+		<result property="proCommunication" column="PRO_COMMUNICATION"/>
+		<result property="proEtc" 			column="PRO_ETC"/>
+	</resultMap>	
+	
+	<!-- 프로젝트명 / 개발환경 -->
+	<select id="selectproBoard"	resultMap="projectboardResultSet">
+		select *
+		from PROJECT
+		where PRO_ID = #{ pId }
+	</select>
+	<select id="selectProjectBoard"	resultMap="projectboardResultSet">
+		select *
+		from PROJECT
+		where PRO_ID = #{ pId }
+	</select>
+	
+	<!-- 프로젝트명 / 개발환경 -->
+	<update id="updateProjectBoard">
+		UPDATE
+		      PROJECT
+		SET    
+				PRO_NAME			= #{proName},
+    	 		PRO_PERIOD1			= #{proPeriod1},
+    	 		PRO_PERIOD2 		= #{proPeriod2},
+    	 		PRO_CUSTOMER		= #{proCustomer},
+    	 		PRO_COMPANY			= #{proCompany},
+    	 		PRO_AREA			= #{proArea},
+    	 		PRO_PART			= #{proPart},
+    	 		
+    	 		PRO_PRODUCT 		= #{proProduct},
+    	 		PRO_OS 				= #{proOs},
+    	 		PRO_LANGUAGE		= #{proLanguage},
+    	 		PRO_DBMS 			= #{proDbms},
+    	 		PRO_TOOL 			= #{proTool},
+    	 		PRO_COMMUNICATION	= #{proCommunication},
+    	 		PRO_ETC 			= #{proEtc}
+    	 		
+    	WHERE	PRO_ID = #{ code }
+	</update>
+	<update id="updateProjectBoardGet">
+		UPDATE
+		     	PROJECT
+
+		SET    
+				PRO_NAME			= #{proName},
+    	 		PRO_PERIOD1			= #{proPeriod1},
+    	 		PRO_PERIOD2 		= #{proPeriod2},
+    	 		PRO_CUSTOMER		= #{proCustomer},
+    	 		PRO_COMPANY			= #{proCompany},
+    	 		PRO_AREA			= #{proArea},
+    	 		PRO_PART			= #{proPart},
+    	 		
+    	 		PRO_PRODUCT 		= #{proProduct},
+    	 		PRO_OS 				= #{proOs},
+    	 		PRO_LANGUAGE		= #{proLanguage},
+    	 		PRO_DBMS 			= #{proDbms},
+    	 		PRO_TOOL 			= #{proTool},
+    	 		PRO_COMMUNICATION	= #{proCommunication},
+    	 		PRO_ETC 			= #{proEtc}
+    	 		
+    	WHERE   PRO_ID = #{ code }
+	</update>
+	
+	
+	
+	<!-- 게시물 삭제  -->
+	<delete id="deleteBoard">
+		delete from member where member_code = #{code}
+	</delete>
+	
+	<insert id="insertscBoard">
+		INSERT 
+		INTO MEMBER 
+		VALUES (MEMBER_SEQ.NEXTVAL, #{kname}, #{ename},#{cname}, #{inumber1},#{inumber2},#{file},#{year},#{month},#{day},
+		#{calendar}, #{gender},#{marry}, #{annual},#{salary}, #{duty}, #{entry},#{address1},#{address2},
+		#{phone1},#{phone2},#{phone3},#{mail},#{grade},#{state},DEFAULT,#{worktype},#{alcohol},#{val}
+		)
+	</insert>
+	
+	
+	
+	
+	
+
+	
+	
+	<!-- 검색 -->
+	<select id="selectSearchList" parameterType="com.kh.pop.service.model.vo.SearchCondition" resultMap="scboardResultSet">
+		SELECT *
+		FROM member
+		WHERE MEMBER_STATUS='Y'
+		<choose>
+			<when test="kname != null">
+				AND MEMBER_KNAME like'%' || #{kname} || '%'
+			</when>
+			<when test="inumber1 != null">
+				AND MEMBER_INUMBER1 like '%' || #{inumber1} || '%'
+			</when>
+			<when test="gender != null">
+				AND MEMBER_GENDER like '%' || #{gender} || '%'
+			</when>
+			<when test="annual != null">
+				AND MEMBER_ANNUAL like '%' || #{annual} || '%'
+			</when>
+			<when test="address2 != null">
+				AND MEMBER_ADDRESS2 like '%' || #{address2} || '%'
+			</when>
+		</choose>
+		ORDER BY MEMBER_CODE DESC
+	</select>
+	<!-- 검색 수 -->
+	<select id="getSearchListCount" parameterType="com.kh.pop.service.model.vo.SearchCondition" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM member
+		WHERE MEMBER_STATUS='Y'
+		<if test="kname != null">
+			AND MEMBER_KNAME like '%' || #{kname} || '%'
+		</if>
+		<if test="inumber1 != null">
+			AND MEMBER_INUMBER1 like '%' || #{inumber1} || '%'
+		</if>
+		<if test="gender != null">
+			AND MEMBER_GENDER like '%' || #{gender} || '%'
+		</if>
+		<if test="annual != null">
+			AND MEMBER_ANNUAL like '%' || #{annual} || '%'
+		</if>
+		<if test="address2 != null">
+			AND MEMBER_ADDRESS2 like '%' || #{address2} || '%'
+		</if>
+	</select>
+	
+	
+	
+	
+	
+	<!-- 예비인력 검색 -->
+	<select id="selectSearchreserveList" parameterType="com.kh.pop.service.model.vo.SearchCondition" resultMap="scboardResultSet">
+		SELECT *
+		FROM member
+		WHERE MEMBER_VAL = '예비'
+		<choose>
+			<when test="kname != null">
+				AND MEMBER_KNAME like'%' || #{kname} || '%'
+			</when>
+			<when test="inumber1 != null">
+				AND MEMBER_INUMBER1 like '%' || #{inumber1} || '%'
+			</when>
+		</choose>
+		ORDER BY MEMBER_CODE DESC
+	</select>
+	<!-- 예비인력 검색 수 -->
+	<select id="getSearchreserveListCount" parameterType="com.kh.pop.service.model.vo.SearchCondition" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM member
+		WHERE MEMBER_VAL = '예비'
+		<if test="kname != null">
+			AND MEMBER_KNAME like '%' || #{kname} || '%'
+		</if>
+		<if test="inumber1 != null">
+			AND MEMBER_INUMBER1 like '%' || #{inumber1} || '%'
+		</if>
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	<!--                        퇴직자검색                -->
+	<select id="selectSearchOutList" parameterType="com.kh.pop.service.model.vo.SearchCondition" resultMap="scboardResultSet">
+		SELECT *
+		FROM MEMBER
+		WHERE  
+			MEMBER_STATUS = 'N'
+		<choose>
+			<when test="kname != null">
+				AND MEMBER_KNAME like'%' || #{kname} || '%'
+			</when>
+			<when test="inumber1 != null">
+				AND MEMBER_INUMBER1 like '%' || #{inumber1} || '%'
+			</when>
+			<when test="gender != null">
+				AND MEMBER_GENDER like '%' || #{gender} || '%'
+			</when>
+			<when test="annual != null">
+				AND MEMBER_ANNUAL like '%' || #{annual} || '%'
+			</when>
+			<when test="address2 != null">
+				AND MEMBER_ADDRESS2 like '%' || #{address2} || '%'
+			</when>
+		</choose>
+		ORDER BY MEMBER_CODE DESC
+	</select>
+	<!-- 퇴직자         검 색   수     -->
+	<select id="getSearchOutListCount" parameterType="com.kh.pop.service.model.vo.SearchCondition" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE 
+			MEMBER_STATUS = 'N'
+		<if test="kname != null">
+			AND MEMBER_KNAME like '%' || #{kname} || '%'
+		</if>
+		<if test="inumber1 != null">
+			AND MEMBER_INUMBER1 like '%' || #{inumber1} || '%'
+		</if>
+		<if test="gender != null">
+			AND MEMBER_GENDER like '%' || #{gender} || '%'
+		</if>
+		<if test="annual != null">
+			AND MEMBER_ANNUAL like '%' || #{annual} || '%'
+		</if>
+		<if test="address2 != null">
+			AND MEMBER_ADDRESS2 like '%' || #{address2} || '%'
+		</if>
+	</select>
+
+
+
+
+	<!-- 파일 부분 -->
+	<resultMap type="scFileInfo" id="scfileInfoResultMap">
+			<id property="fileNo" column="FILE_NO"/>
+			<result property="fileName" column="FILE_NAME"/>
+			<result property="changeName" column="FILE_CHANGE"/>
+			<result property="fileCreateDate" column="FILE_CREATE_DATE"/>
+			<result property="fileLevel" column="FILE_LEVEL"/>
+			<result property="filePath" column="FILE_PATH"/>
+			<result property="fileStatus" column="FILE_STATUS"/>
+			<result property="BoardNo" column="BOARD_NO"/>
+	</resultMap>
+	
+	<update id="updateFile">
+		UPDATE FILE_INFO
+        SET 
+            FILE_NAME = #{fileName},
+            FILE_CHANGE = #{changeName},
+            FILE_CREATE_DATE = #{fileCreateDate},
+            FILE_PATH = #{filePath}
+        WHERE 
+        	FILE_NO = #{fileNo}
+	</update>
+	
+	<insert id="insertFile" parameterType="map">
+			INSERT 
+			INTO FILE_INFO 
+			VALUES(SEQ_FNO.NEXTVAL, #{fileName}, #{changeName}, SYSDATE, 1, 
+						#{filePath}, 'Y',#{code} )
+	</insert>
+	<select id="detailFile" resultMap="scfileInfoResultMap">
+			SELECT *
+			FROM FILE_INFO
+			WHERE FILE_NO=#{fileNo}
+	</select>
+	
+	
+	
+	
+	
+	
+	<!--   .....................................................거래처 게시판.................................................          -->
+	
+	
+	
+	
+	
+		<!-- 거래처 게시판 count  -->
+	<select id="selectListCount2" 		resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM CLIENT
+		WHERE C_ID IS NOT NULL
+	</select>
+	
+	<!-- 거래처 게시판  -->
+	<select id="selectcblist"		resultMap="clientboardResultSet">
+		SELECT 
+			*
+		FROM CLIENT
+		WHERE C_ID is not null
+		ORDER BY C_ID DESC
+	</select>
+	<!-- 거래처 게시판 insert -->
+	<insert id="selectClientBoard">
+		INSERT 
+		INTO CLIENT
+		VALUES(
+		 CLIENT_SEQ.NEXTVAL,#{companyName},#{traderNum},#{onerName},#{category},#{state},
+		 #{address1},#{address2},#{tel1},#{tel2},#{tel3},#{pax1},#{pax2},#{pax3},
+		 #{manager},#{phone1},#{phone2},#{phone3},#{phone},#{pax},#{tel}
+		)
+	
+	</insert>
+	
+	<!-- 거래처 게시판 resultMap  -->
+	<resultMap type="clientBoard" id="clientboardResultSet">
+		<id 	property="cId" 			column="C_ID"/>
+		<result property="companyName" 	column="COMPANYNAME"/>
+		<result property="traderNum" 	column="TRADER_NUM"/>
+		<result property="onerName" 	column="ONERNAME"/>
+		<result property="category" 	column="CATEGORY"/>
+		<result property="state" 		column="STATE"/>
+		<result property="address1" 	column="ADDRESS1"/>
+		<result property="address2" 	column="ADDRESS2"/>
+		<result property="tel1" 		column="TEL1"/>
+		<result property="tel2" 		column="TEL2"/>
+		<result property="tel3"	 		column="TEL3"/>
+		<result property="pax1"	 		column="PAX1"/>
+		<result property="pax2"	 		column="PAX2"/>
+		<result property="pax3"	 		column="PAX3"/>
+		<result property="manager" 		column="MANAGER"/>
+		<result property="phone1" 		column="PHONE1"/>
+		<result property="phone2" 		column="PHONE2"/>
+		<result property="phone3" 		column="PHONE3"/>
+		<result property="phone" 		column="PHONE"/>
+		<result property="pax"	 		column="PAX"/>
+		<result property="tel"	 		column="TEL"/>
+	</resultMap>
+	
+	<!-- 거래처 검색 수 -->
+	<select id="getClientSearchListCount" parameterType="com.kh.pop.service.model.vo.SearchClient" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM CLIENT
+		WHERE C_ID IS NOT NULL
+		<if test="companyName != null">
+			AND COMPANYNAME like '%' || #{companyName} || '%'
+		</if>
+		<if test="category != null">
+			AND CATEGORY like '%' || #{category} || '%'
+		</if>
+		<if test="state != null">
+			AND STATE like '%' || #{state} || '%'
+		</if>
+		<if test="tel != null">
+			AND TEL like '%' || #{tel} || '%'
+		</if>
+		<if test="manager != null">
+			AND MANAGER like '%' || #{manager} || '%'
+		</if>
+		<if test="phone != null">
+			AND PHONE like '%' || #{phone} || '%'
+		</if>
+	</select>
+	
+	
+	<!-- 거래처 BOARD 검색 -->
+	<select id="selectClientSearchList" parameterType="com.kh.pop.service.model.vo.SearchClient" resultMap="clientboardResultSet">
+		SELECT *
+		FROM CLIENT
+		WHERE C_ID IS NOT NULL
+		<choose>
+			<when test="companyName != null">
+				AND COMPANYNAME like '%' || #{companyName} || '%'
+			</when>
+			<when test="category != null">
+				AND CATEGORY like '%' || #{category} || '%'
+			</when>
+			<when test="state != null">
+				AND STATE like '%' || #{state} || '%'
+			</when>
+			<when test="tel != null">
+				AND TEL like '%' || #{tel} || '%'
+			</when>
+			<when test="manager != null">
+				AND MANAGER like '%' || #{manager} || '%'
+			</when>
+			<when test="phone != null">
+				AND PHONE like '%' || #{phone} || '%'
+			</when>
+		</choose>
+		ORDER BY C_ID DESC
+	</select>
+	<!-- 거래처 board delete -->
+	<delete id="deleteclientBoard">
+		delete from client where C_ID = #{cId}
+	</delete>
+	<update id="updateClient">
+		UPDATE 	CLIENT
+		SET 	COMPANYNAME	= #{companyName}, 
+				TRADER_NUM	= #{traderNum},
+				ONERNAME = #{onerName},
+				CATEGORY = #{category},
+				STATE = #{state},
+				ADDRESS1 = #{address1},
+				ADDRESS2 = #{address2},
+				TEL1 = #{tel1},
+				TEL2 = #{tel2},
+				TEL3 = #{tel3},
+				PAX1 = #{pax1},
+				PAX2 = #{pax2},
+				PAX3 = #{pax3},
+				MANAGER = #{manager},
+				PHONE1 = #{phone1},
+				PHONE2 = #{phone2},
+				PHONE3 = #{phone3}
+		WHERE 	C_ID 	= #{cId}
+	</update>
+	<select id="selectClient" resultMap="clientboardResultSet">
+		SELECT *
+		FROM CLIENT
+		WHERE 	C_ID = #{cId} 
+	</select>
+	<select id="selectnewClient" resultMap="clientboardResultSet">
+		SELECT *
+		FROM CLIENT
+		WHERE 	C_ID = #{cId} 
+	</select>
+	
+</mapper>
